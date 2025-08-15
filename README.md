@@ -4,42 +4,43 @@ This project demonstrates a working multi-agent system using Google's Agent Deve
 
 ## 🎯 **How It Works**
 
-The system uses a **multi-agent orchestrator** that:
+The system uses an **enhanced tools-based multi-agent coordinator** that:
 1. **Analyzes user input** to understand the topic and intent
-2. **Routes to the appropriate specialized agent** based on content
+2. **Calls appropriate agent tools** based on content using ADK tools
 3. **Returns responses with clear agent identification** (emojis + labels)
-4. **Provides expert responses** from the most suitable agent
+4. **Provides expert responses** from specialized agent functions
+5. **Enables multi-agent collaboration** for complex queries
 
 ## 🤖 **Available Agents**
 
 ### 1. 👋 Hello Agent
 - **Purpose**: General greetings and casual conversation
 - **Best for**: Welcoming users, small talk, general questions
-- **File**: `hello_agent/agent.py` (main orchestrator)
+- **Implementation**: Available in both Phase 0 and Phase 1
 - **Response Format**: `👋 Hello Agent: [response]`
 
 ### 2. 💻 Tech Agent
 - **Purpose**: Technical support and programming help
 - **Best for**: Programming questions, debugging, technical explanations
-- **File**: `hello_agent/tech_agent.py`
+- **Implementation**: Available in both Phase 0 and Phase 1
 - **Response Format**: `💻 Tech Agent: [response]`
 
 ### 3. 🎨 Creative Agent
 - **Purpose**: Creative writing and artistic projects
 - **Best for**: Storytelling, brainstorming, creative writing, artistic concepts
-- **File**: `hello_agent/creative_agent.py`
+- **Implementation**: Available in both Phase 0 and Phase 1
 - **Response Format**: `🎨 Creative Agent: [response]`
 
 ### 4. 💼 Business Agent
 - **Purpose**: Business strategy and professional advice
 - **Best for**: Business planning, career advice, professional development
-- **File**: `hello_agent/business_agent.py`
+- **Implementation**: Available in both Phase 0 and Phase 1
 - **Response Format**: `💼 Business Agent: [response]`
 
-### 5. 🔀 Multi-Agent Orchestrator
-- **Purpose**: Main coordinator that routes to appropriate agents
-- **Best for**: Primary agent for all conversations
-- **File**: `hello_agent/multi_agent_orchestrator.py`
+### 5. 🔀 Multi-Agent Coordinators
+- **Phase 0**: Smart prompt-based coordinator (simulated multi-agent)
+- **Phase 1**: Function-based coordinator (enhanced multi-agent capabilities)
+- **Best for**: Primary agents for all conversations with multi-agent capabilities
 - **Response Format**: `[Agent Emoji] [Agent Name]: [response]`
 
 ## 🚀 **Quick Start**
@@ -57,10 +58,21 @@ GOOGLE_API_KEY=your_api_key_here
 
 ### 3. Run the Multi-Agent System
 ```bash
+# To run Phase 1 (current default)
 adk web
+
+# Or use the phase switcher to choose your phase
+python switch_phase.py
 ```
 
 **That's it!** The system will automatically route conversations to the appropriate agent.
+
+### 4. Phase-Specific Information
+- **Current Phase**: Phase 1 (Enhanced Function-Based Multi-Agent)
+- **Phase 0 Documentation**: See `phase0/README.md` (Smart Prompt-Based)
+- **Phase 1 Documentation**: See `phase1/README.md` (Function-Based)
+- **Testing Guide**: See `phase1/TESTING_GUIDE.md`
+- **Phase Switching**: Use `python switch_phase.py` to switch between phases
 
 ## 🎯 **Topic Routing Examples**
 
@@ -76,9 +88,9 @@ The system automatically detects topics and routes accordingly:
 ## 🔧 **Development & Customization**
 
 ### Adding New Agents
-1. Create a new agent file (e.g., `hello_agent/math_agent.py`)
+1. Create a new agent file in the appropriate phase directory
 2. Define the agent with appropriate instructions
-3. Update the orchestrator's routing logic
+3. Update the coordinator's routing logic
 4. Restart the server: `adk web`
 
 ### Modifying Agent Behavior
@@ -86,28 +98,38 @@ The system automatically detects topics and routes accordingly:
 2. Restart the server to apply changes
 3. Test with relevant topics
 
-### Testing Individual Agents
+### Testing Individual Phases
 ```bash
-# Test specific agents directly
-adk web --agent tech_agent
-adk web --agent creative_agent
-adk web --agent business_agent
+# Test Phase 0 (Smart Prompt-Based)
+python switch_phase.py  # Select option 0
+adk web
+
+# Test Phase 1 (Function-Based)
+python switch_phase.py  # Select option 1
+adk web
 ```
 
 ## 📁 **Project Structure**
 
 ```
 my-first-adk-agent/
-├── hello_agent/
-│   ├── agent.py                    # Main orchestrator (root agent)
-│   ├── multi_agent_orchestrator.py # Multi-agent coordinator
+├── phase0/                         # Phase 0: Smart Prompt-Based Multi-Agent
+│   ├── agent.py                   # Phase 0 coordinator (smart prompt-based)
+│   ├── multi_agent_orchestrator.py # Smart prompt-based coordinator
 │   ├── tech_agent.py              # Technical support agent
 │   ├── creative_agent.py          # Creative writing agent
 │   ├── business_agent.py          # Business strategy agent
-│   └── router_agent.py            # Topic router (optional)
+│   └── README.md                  # Phase 0 documentation
+├── phase1/                         # Phase 1: Enhanced Function-Based Multi-Agent
+│   ├── agent.py                   # Phase 1 coordinator (function-based)
+│   ├── tools_multi_agent.py       # Enhanced function-based coordinator
+│   ├── README.md                  # Phase 1 documentation
+│   ├── MULTI_AGENT_PROGRESSION.md # Development path documentation
+│   └── TESTING_GUIDE.md          # Testing guide for Phase 1
+├── switch_phase.py                # Easy phase switching utility
 ├── .env                           # Environment variables
 ├── requirements.txt               # Dependencies
-└── README.md                      # This file
+└── README.md                      # This file (main project documentation)
 ```
 
 ## ⚠️ **Important Notes**
@@ -120,14 +142,18 @@ my-first-adk-agent/
 ## 🎉 **Current Status**
 
 ✅ **Working Features:**
-- Multi-agent routing system
+- Enhanced function-based multi-agent system
+- True agent separation via specialized functions
 - Clear agent identification in responses
 - Topic-based conversation routing
 - Specialized agent expertise
 - Automatic agent selection
+- Multi-agent collaboration capabilities
+- Easy phase switching between implementations
 
 🚀 **Ready for:**
-- Adding more specialized agents
-- Implementing agent tools
+- Adding more specialized agent tools
 - Advanced conversation flows
 - Custom routing logic
+- Phase 2: API-based multi-agent system
+- Phase 3: Message queue multi-agent system
