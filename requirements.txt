@@ -1,0 +1,9 @@
+# Google Agent Development Toolkit (ADK)
+google-adk>=0.1.0
+
+# Common dependencies for agent development
+python-dotenv>=1.0.0
+
+# Optional: Additional dependencies you might need
+# requests>=2.31.0
+# pydantic>=2.0.0
