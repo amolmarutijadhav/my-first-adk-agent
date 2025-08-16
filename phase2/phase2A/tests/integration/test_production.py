@@ -4,10 +4,18 @@ This test demonstrates the full functionality working correctly.
 """
 
 import asyncio
+import sys
+import os
+import pytest
+
+# Add the current directory to Python path
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 from coordinator import CoordinatorAgent
 
 
-async def production_demo():
+@pytest.mark.asyncio
+async def test_production_demo():
     """Demonstrate Phase 2A production functionality."""
     print("🚀 Phase 2A: Modular ADK Architecture - Production Demo")
     print("=" * 60)
@@ -48,8 +56,15 @@ async def production_demo():
             response = await agent._process_query_internal(query)
             print(f"   💬 Response: {response}")
             
+            # Assertions
+            assert routing_decision.primary_agent is not None
+            assert routing_decision.confidence > 0
+            assert response is not None
+            assert len(response) > 0
+            
         except Exception as e:
             print(f"   ❌ Error: {e}")
+            assert False, f"Production test failed for query {i}: {e}"
     
     print("\n" + "=" * 60)
     print("🎉 Phase 2A Production Demo Completed!")
@@ -62,4 +77,4 @@ async def production_demo():
 
 
 if __name__ == "__main__":
-    asyncio.run(production_demo())
+    asyncio.run(test_production_demo())

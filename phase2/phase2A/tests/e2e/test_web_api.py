@@ -6,8 +6,10 @@ This tests the API endpoints without needing a browser.
 import asyncio
 import aiohttp
 import json
+import pytest
 
 
+@pytest.mark.asyncio
 async def test_web_api():
     """Test the web API endpoints."""
     base_url = "http://localhost:8000"
@@ -25,10 +27,14 @@ async def test_web_api():
                     print(f"✅ Status: {data['status']}")
                     print(f"✅ Agents: {data['agents']}")
                     print(f"✅ Total: {data['total_agents']}")
+                    assert data['status'] == 'healthy'
                 else:
                     print(f"❌ Status failed: {response.status}")
+                    assert False, f"Status failed: {response.status}"
         except Exception as e:
             print(f"❌ Status error: {e}")
+            # Skip this test if server is not running
+            pytest.skip(f"Web server not running: {e}")
         
         # Test 2: Agents Info
         print("\n2. Testing Agents Info...")
@@ -38,10 +44,13 @@ async def test_web_api():
                     data = await response.json()
                     for agent_name, agent_info in data.items():
                         print(f"✅ {agent_name}: {agent_info['description']}")
+                    assert len(data) > 0
                 else:
                     print(f"❌ Agents failed: {response.status}")
+                    assert False, f"Agents failed: {response.status}"
         except Exception as e:
             print(f"❌ Agents error: {e}")
+            pytest.skip(f"Web server not running: {e}")
         
         # Test 3: Query Processing
         test_queries = [
@@ -65,11 +74,19 @@ async def test_web_api():
                         print(f"      ✅ Confidence: {data['confidence']:.2f}")
                         print(f"      ✅ Type: {data['query_type']}")
                         print(f"      ✅ Response: {data['response'][:100]}...")
+                        
+                        # Assertions
+                        assert data['routed_agent'] is not None
+                        assert data['confidence'] > 0
+                        assert data['response'] is not None
+                        assert len(data['response']) > 0
                     else:
                         error_data = await response.text()
                         print(f"      ❌ Query failed: {response.status} - {error_data}")
+                        assert False, f"Query failed: {response.status} - {error_data}"
             except Exception as e:
                 print(f"      ❌ Query error: {e}")
+                pytest.skip(f"Web server not running: {e}")
     
     print("\n" + "=" * 50)
     print("🎉 Web API Testing Completed!")

@@ -7,14 +7,16 @@ This test verifies that the core components are working correctly.
 import asyncio
 import sys
 import os
+import pytest
 
 # Add the current directory to Python path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 from coordinator import CoordinatorAgent
 from config.settings import get_settings
 
 
+@pytest.mark.asyncio
 async def test_basic_functionality():
     """Test basic functionality of the multi-agent system."""
     print("🧪 Testing Phase 2A: Modular ADK Architecture")
@@ -52,13 +54,14 @@ async def test_basic_functionality():
         print(f"   ✅ Healthy agents: {healthy_agents}/{len(health['agents'])}")
         
         print("\n🎉 All basic tests passed!")
-        return True
+        assert True
         
     except Exception as e:
         print(f"\n❌ Test failed: {str(e)}")
-        return False
+        assert False, f"Test failed: {str(e)}"
 
 
+@pytest.mark.asyncio
 async def test_query_routing():
     """Test query routing functionality."""
     print("\n🔍 Testing Query Routing...")
@@ -91,38 +94,14 @@ async def test_query_routing():
                 print(f"   ⚠️  Routing different (expected {expected_agent})")
         
         print("\n🎉 Query routing tests completed!")
-        return True
+        assert True
         
     except Exception as e:
         print(f"\n❌ Query routing test failed: {str(e)}")
-        return False
-
-
-async def main():
-    """Run all tests."""
-    print("🚀 Starting Phase 2A Tests")
-    print("=" * 50)
-    
-    # Run basic functionality tests
-    basic_success = await test_basic_functionality()
-    
-    # Run query routing tests
-    routing_success = await test_query_routing()
-    
-    # Summary
-    print("\n" + "=" * 50)
-    print("📊 Test Summary:")
-    print(f"   Basic Functionality: {'✅ PASS' if basic_success else '❌ FAIL'}")
-    print(f"   Query Routing: {'✅ PASS' if routing_success else '❌ FAIL'}")
-    
-    if basic_success and routing_success:
-        print("\n🎉 All tests passed! Phase 2A is ready for use.")
-        return 0
-    else:
-        print("\n❌ Some tests failed. Please check the implementation.")
-        return 1
+        assert False, f"Query routing test failed: {str(e)}"
 
 
 if __name__ == "__main__":
-    exit_code = asyncio.run(main())
-    sys.exit(exit_code)
+    # Run tests directly if called as script
+    asyncio.run(test_basic_functionality())
+    asyncio.run(test_query_routing())
